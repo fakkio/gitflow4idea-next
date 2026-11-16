@@ -1,8 +1,6 @@
 package gitflow.actions;
 
 import com.intellij.openapi.actionSystem.ActionPlaces;
-import com.intellij.openapi.actionSystem.ActionUiKind;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.ex.ActionUtil;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
@@ -20,7 +18,7 @@ public class GitflowActions {
         GitResolveConflictsAction resolveAction = new GitResolveConflictsAction();
         // Just enough context (the project) to let the conflicts resolver launch
         DataContext dataContext = SimpleDataContext.getProjectContext(project);
-        AnActionEvent e = AnActionEvent.createEvent(dataContext, null, ActionPlaces.UNKNOWN, ActionUiKind.NONE, null);
-        ActionUtil.performAction(resolveAction, e);
+        // invokeAction is available on every platform version from 2024.2 to 2026.3
+        ActionUtil.invokeAction(resolveAction, dataContext, ActionPlaces.UNKNOWN, null, null);
     }
 }

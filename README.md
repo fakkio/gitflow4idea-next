@@ -1,6 +1,6 @@
 # Git Flow Integration Next for IntelliJ
 
-> Maintained fork of [Git Flow Integration Plus](https://github.com/RubinCarter/gitflow4idea-plus) by Rubin Carter (itself a fork of [gitflow4idea](https://github.com/OpherV/gitflow4idea) by Opher Vishnia), kept compatible with current JetBrains IDE builds (2026.3+). All credit for the original work goes to them.
+> Maintained fork of [Git Flow Integration Plus](https://github.com/RubinCarter/gitflow4idea-plus) by Rubin Carter (itself a fork of [gitflow4idea](https://github.com/OpherV/gitflow4idea) by Opher Vishnia), kept compatible with current JetBrains IDE builds (verified from 2024.2 to 2026.3). All credit for the original work goes to them.
 
 
 An intelliJ plugin providing a UI layer for git-flow, which in itself is a collection of Git extensions to provide high-level repository operations for Vincent [Driessen's branching model](http://nvie.com/git-model).
@@ -20,8 +20,10 @@ Requires a JDK 25 (the JetBrains Runtime bundled with any 2026.3 IDE works):
 ```
 ./gradlew buildPlugin                                  # downloads IntelliJ IDEA 2026.3
 ./gradlew buildPlugin -PplatformLocalPath=<IDE dir>    # or reuse an installed IDE
-./gradlew verifyPlugin
+./gradlew verifyPlugin -PverifyIdes=IC-2024.2.6,IU-2026.1.5.1   # check other IDE versions
 ```
+
+The plugin is compiled against 2026.3 but emitted as Java 21 bytecode so that it also loads in older IDEs (since-build 242). When touching platform APIs, re-run `verifyPlugin` against the oldest supported version.
 
 The zip is written to `build/distributions`.
 

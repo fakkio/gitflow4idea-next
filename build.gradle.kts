@@ -1,3 +1,4 @@
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask.FailureLevel
 
@@ -14,16 +15,18 @@ repositories {
 }
 
 group = "com.github.fakkio"
-version = "0.9.0"
+version = "0.9.1"
 
 // Platform to compile against. Pass -PplatformLocalPath=<IDE install dir> to reuse a
 // locally installed IDE instead of downloading one.
 val platformVersion = providers.gradleProperty("platformVersion").getOrElse("2026.3")
 val platformLocalPath = providers.gradleProperty("platformLocalPath").orNull
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_25
-    targetCompatibility = JavaVersion.VERSION_25
+// Bytecode level: must not exceed the Java runtime of the oldest supported IDE.
+val javaRelease = providers.gradleProperty("javaRelease").getOrElse("21").toInt()
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release = javaRelease
 }
 
 dependencies {
@@ -49,10 +52,19 @@ intellijPlatform {
             FailureLevel.MISSING_DEPENDENCIES,
             FailureLevel.INVALID_PLUGIN,
         )
+        // -PverifyIdes=IU-2025.1.7.2,IU-2024.3.7.1   IDEs to download and verify against
+        // -PverifyLocalIdes=<dir>;<dir>              installed IDEs to verify against
         ides {
-            if (platformLocalPath != null) {
-                local(platformLocalPath)
-            } else {
+            val remote = providers.gradleProperty("verifyIdes").orNull
+            val locals = providers.gradleProperty("verifyLocalIdes").orNull ?: platformLocalPath
+            remote?.split(',')?.filter { it.isNotBlank() }?.forEach { notation ->
+                create {
+                    type = IntelliJPlatformType.fromCode(notation.trim().substringBefore('-'))
+                    version = notation.trim().substringAfter('-')
+                }
+            }
+            locals?.split(';')?.filter { it.isNotBlank() }?.forEach { local(it.trim()) }
+            if (remote == null && locals == null) {
                 recommended()
             }
         }
@@ -67,7 +79,7 @@ intellijPlatform {
         id = "com.github.fakkio.gitflow4idea-next"
         version = project.version.toString()
         ideaVersion {
-            sinceBuild = "263"
+            sinceBuild = providers.gradleProperty("sinceBuild").getOrElse("242")
             untilBuild = provider { null }
         }
         description = """
@@ -77,6 +89,11 @@ intellijPlatform {
             <p>Maintained fork of <a href="https://github.com/RubinCarter/gitflow4idea-plus">Git Flow Integration Plus</a> by Rubin Carter, itself based on <a href="https://github.com/OpherV/gitflow4idea">gitflow4idea</a> by Opher Vishnia, kept compatible with current IDE builds.</p>
         """
         changeNotes = """
+            <H2>Changelog for 0.9.1</H2>
+            <ul>
+              <li>Compatible with all IDE builds from 2024.2 to 2026.3 (was 2026.3 only)</li>
+            </ul>
+
             <H2>Changelog for 0.9.0</H2>
             <ul>
               <li>Forked from Git Flow Integration Plus and renamed to Git Flow Integration Next</li>
