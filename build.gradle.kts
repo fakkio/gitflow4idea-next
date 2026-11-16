@@ -15,7 +15,7 @@ repositories {
 }
 
 group = "com.github.fakkio"
-version = "0.9.1"
+version = "0.9.2"
 
 // Platform to compile against. Pass -PplatformLocalPath=<IDE install dir> to reuse a
 // locally installed IDE instead of downloading one.
@@ -83,12 +83,33 @@ intellijPlatform {
             untilBuild = provider { null }
         }
         description = """
-            <H2>Git Flow Integration Next</H2>
-            An intelliJ plugin providing a UI layer for git-flow, which in itself is a collection of Git extensions to provide high-level repository operations for Vincent <a href="https://nvie.com/posts/a-successful-git-branching-model/">Driessen's branching model</a>
-            <p>Works with git-flow (AVH Edition), git-flow-next and gitflow-cjs.</p>
-            <p>Maintained fork of <a href="https://github.com/RubinCarter/gitflow4idea-plus">Git Flow Integration Plus</a> by Rubin Carter, itself based on <a href="https://github.com/OpherV/gitflow4idea">gitflow4idea</a> by Opher Vishnia, kept compatible with current IDE builds.</p>
+            <p>Run <a href="https://nvie.com/posts/a-successful-git-branching-model/">git-flow</a> from the IDE: start, publish, track and finish features, releases, hotfixes and bugfixes from the status bar or the Git menu, without typing <code>git flow</code> commands.</p>
+
+            <p><b>What you get</b></p>
+            <ul>
+              <li>A <b>Gitflow</b> status bar widget listing the actions that apply to the current branch</li>
+              <li>The same actions under <b>Git | Gitflow</b>, each assignable to a shortcut</li>
+              <li>Initialize or re-initialize git-flow in a repository, with your own branch names and prefixes</li>
+              <li>Per-project defaults for every branch type: fetch before start, keep the branch after finish, <code>--no-ff</code>, push on finish, tag message and more</li>
+              <li>Merge conflicts during a finish open the IDE merge tool, then the finish is retried</li>
+              <li>Open Task and Close Task dialogs can start and finish a git-flow branch for the task</li>
+            </ul>
+
+            <p><b>Requirements</b></p>
+            <p>git-flow must be installed and available as <code>git flow</code>. Supported implementations: <a href="https://github.com/gittower/git-flow-next">git-flow-next</a> (recommended, actively maintained), git-flow AVH Edition and gitflow-cjs. The original nvie/gitflow 0.4.1 is not supported.</p>
+
+            <p><b>Why another Git Flow plugin</b></p>
+            <p>This is a maintained continuation of <a href="https://github.com/RubinCarter/gitflow4idea-plus">Git Flow Integration Plus</a> by Rubin Carter, itself based on <a href="https://github.com/OpherV/gitflow4idea">gitflow4idea</a> by Opher Vishnia. Those plugins no longer load in recent IDE versions; this one is checked with the JetBrains Plugin Verifier on every version from 2024.2 to 2026.3 and adds git-flow-next support. Uninstall the older plugin before installing this one: they register the same actions.</p>
+
+            <p>Source code and issue tracker: <a href="https://github.com/fakkio/gitflow4idea-next">github.com/fakkio/gitflow4idea-next</a></p>
         """
         changeNotes = """
+            <H2>Changelog for 0.9.2</H2>
+            <ul>
+              <li>New plugin icon</li>
+              <li>Expanded plugin description</li>
+            </ul>
+
             <H2>Changelog for 0.9.1</H2>
             <ul>
               <li>Compatible with all IDE builds from 2024.2 to 2026.3 (was 2026.3 only)</li>
