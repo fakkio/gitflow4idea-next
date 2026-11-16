@@ -15,7 +15,7 @@ repositories {
 }
 
 group = "com.github.fakkio"
-version = "0.9.2"
+version = "0.9.3"
 
 // Platform to compile against. Pass -PplatformLocalPath=<IDE install dir> to reuse a
 // locally installed IDE instead of downloading one.
@@ -99,11 +99,16 @@ intellijPlatform {
             <p>git-flow must be installed and available as <code>git flow</code>. Supported implementations: <a href="https://github.com/gittower/git-flow-next">git-flow-next</a> (recommended, actively maintained), git-flow AVH Edition and gitflow-cjs. The original nvie/gitflow 0.4.1 is not supported.</p>
 
             <p><b>Why another Git Flow plugin</b></p>
-            <p>This is a maintained continuation of <a href="https://github.com/RubinCarter/gitflow4idea-plus">Git Flow Integration Plus</a> by Rubin Carter, itself based on <a href="https://github.com/OpherV/gitflow4idea">gitflow4idea</a> by Opher Vishnia. Those plugins no longer load in recent IDE versions; this one is checked with the JetBrains Plugin Verifier on every version from 2024.2 to 2026.3 and adds git-flow-next support. Uninstall the older plugin before installing this one: they register the same actions.</p>
+            <p>This is a maintained continuation of <a href="https://github.com/RubinCarter/gitflow4idea-plus">Git Flow Integration Plus</a> by Rubin Carter, itself based on <a href="https://github.com/OpherV/gitflow4idea">gitflow4idea</a> by Opher Vishnia. The released version of Git Flow Integration Plus is flagged as incompatible by IDE versions from 2024.2 onwards; this one is checked with the JetBrains Plugin Verifier on every version from 2024.2 to 2026.3 and ships the git-flow-next support that was only available in unreleased betas. Uninstall the older plugin before installing this one: they register the same actions.</p>
 
             <p>Source code and issue tracker: <a href="https://github.com/fakkio/gitflow4idea-next">github.com/fakkio/gitflow4idea-next</a></p>
         """
         changeNotes = """
+            <H2>Changelog for 0.9.3</H2>
+            <ul>
+              <li>Corrected the plugin description</li>
+            </ul>
+
             <H2>Changelog for 0.9.2</H2>
             <ul>
               <li>New plugin icon</li>
