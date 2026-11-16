@@ -105,3 +105,5 @@ fabric.properties
 
 .idea
 .intellijPlatform
+
+.claude/
