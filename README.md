@@ -1,76 +1,98 @@
-# Git Flow Integration Next for IntelliJ
+# Git Flow Integration Next
 
-> Maintained fork of [Git Flow Integration Plus](https://github.com/RubinCarter/gitflow4idea-plus) by Rubin Carter (itself a fork of [gitflow4idea](https://github.com/OpherV/gitflow4idea) by Opher Vishnia), kept compatible with current JetBrains IDE builds (verified from 2024.2 to 2026.3). All credit for the original work goes to them.
+A JetBrains IDE plugin that puts [git-flow](https://nvie.com/posts/a-successful-git-branching-model/) one click away: start, publish, track and finish features, releases, hotfixes and bugfixes without leaving the IDE.
 
+It is a maintained fork of [Git Flow Integration Plus](https://github.com/RubinCarter/gitflow4idea-plus), which stopped loading in recent IDE versions.
 
-An intelliJ plugin providing a UI layer for git-flow, which in itself is a collection of Git extensions to provide high-level repository operations for Vincent [Driessen's branching model](http://nvie.com/git-model).
+![The Gitflow popup in the status bar](docs/img/gitflow.png)
 
-![screenshot](https://github.com/fakkio/gitflow4idea-next/blob/develop/docs/img/gitflow.png)
+## Compatibility
 
-## Companion agent skill (experimental)
+| | Supported |
+|---|---|
+| IDEs | Any IntelliJ-based IDE with the bundled Git plugin (IntelliJ IDEA, PhpStorm, WebStorm, Rider, CLion, Android Studio, …) |
+| IDE versions | 2024.2 to 2026.3, each checked with the JetBrains Plugin Verifier |
+| git-flow | [git-flow-next](https://github.com/gittower/git-flow-next), [git-flow AVH Edition](https://github.com/petervanderdoes/gitflow-avh), gitflow-cjs |
 
-Using an AI coding agent? Check out **[gitflow-cli-plus](https://github.com/RubinCarter/gitflow-cli-plus)** — an agent skill companion to this plugin, derived from a functional analysis of its semantics. It ships a `SKILL.md` that teaches agents the same git-flow operations (init / feature / release / hotfix / bugfix), backed by a small Go CLI binary, follows the AVH edition semantics and config layout, and recognizes repos initialized by git-flow-next through a read-only compatibility layer.
+The original `nvie/gitflow` (version `0.4.1`) is not supported.
 
-**Note: this skill project is currently experimental** — expect rough edges, and please report anything you find in its [issue tracker](https://github.com/RubinCarter/gitflow-cli-plus/issues).
+## Requirements
 
-## Building
+git-flow must be installed and available as `git flow`. Check with:
 
-Requires a JDK 25 (the JetBrains Runtime bundled with any 2026.3 IDE works):
+```
+git flow version
+```
+
+- **git-flow-next** is the actively maintained implementation and the recommended one. Install it with `winget install GitTower.GitFlowNext`, `scoop install git-flow-next` or `brew install git-flow-next`.
+- **git-flow AVH Edition** ships with Git for Windows, but its repository is archived and no longer receives fixes.
+
+See [GITFLOW_VERSION.md](GITFLOW_VERSION.md) if the plugin reports an unsupported or missing git-flow.
+
+## Installation
+
+1. Uninstall *Git Flow Integration Plus* (or the original *Git Flow Integration*) if you have it. The plugins register the same actions and cannot be installed side by side.
+2. Download `gitflow4idea-next-<version>.zip` from the [releases page](https://github.com/fakkio/gitflow4idea-next/releases). Do not unpack it.
+3. In the IDE open **Settings > Plugins > ⚙ > Install Plugin from Disk…** and pick the zip.
+4. Restart the IDE.
+
+Your keymap and the plugin's options carry over from the previous plugin.
+
+## Usage
+
+Open a project that is a Git repository. A **Gitflow** widget appears in the status bar; it reads **No Gitflow** until the repository is initialised.
+
+- **Status bar widget**: click it for the list of actions that apply to the current branch.
+- **Menu**: the same actions live under **Git > Gitflow**.
+- **Shortcut**: assign a key to *Gitflow Operations Popup…* in **Settings > Keymap**.
+
+| Branch type | Actions |
+|---|---|
+| Repository | Initialize, Re-initialize |
+| Feature | Start, Finish, Publish, Track |
+| Release | Start, Finish, Publish, Track |
+| Hotfix | Start, Finish, Publish |
+| Bugfix | Start, Finish, Publish, Track |
+
+If a finish stops on a merge conflict, the plugin opens the IDE's merge tool and retries the finish once the conflicts are resolved.
+
+With the bundled *Task Management* plugin, the **Open Task** and **Close Task** dialogs gain Gitflow options to start a feature or hotfix for the task and to finish it on close.
+
+### Options
+
+**Settings > Other Settings > Gitflow** holds the per-project defaults for each branch type, for example:
+
+- fetch from origin before starting or finishing
+- keep the local or remote branch after finishing
+- always create a merge commit (`--no-ff`)
+- push on finish
+- skip the tag on release or hotfix, or use a custom tag message (`%name%` expands to the branch name)
+
+## Building from source
+
+You need JDK 25; the JetBrains Runtime bundled with any 2026.3 IDE works (point `JAVA_HOME` at its `jbr` folder).
 
 ```
 ./gradlew buildPlugin                                  # downloads IntelliJ IDEA 2026.3
 ./gradlew buildPlugin -PplatformLocalPath=<IDE dir>    # or reuse an installed IDE
-./gradlew verifyPlugin -PverifyIdes=IC-2024.2.6,IU-2026.1.5.1   # check other IDE versions
+./gradlew runIde                                       # start a sandbox IDE with the plugin
+./gradlew verifyPlugin -PverifyIdes=IC-2024.2.6,IU-2026.1.5.1
 ```
-
-The plugin is compiled against 2026.3 but emitted as Java 21 bytecode so that it also loads in older IDEs (since-build 242). When touching platform APIs, re-run `verifyPlugin` against the oldest supported version.
 
 The zip is written to `build/distributions`.
 
-## Getting started
+The plugin is compiled against 2026.3 but emitted as Java 21 bytecode, so that it also loads in older IDEs (`since-build` 242). After touching platform APIs, re-run `verifyPlugin` against the oldest supported version. Each IDE the verifier downloads takes several gigabytes of disk.
 
-For the best introduction to get started with `git flow`, please read Jeff Kreeftmeijer's blog post:
+## Reporting problems
 
-[http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/)
+Open an issue on this repository's [issue tracker](https://github.com/fakkio/gitflow4idea-next/issues), with the IDE version, the output of `git flow version` and the steps to reproduce. Please do not report problems with this fork to the upstream projects.
 
-Or have a look at this [cheat sheet](http://danielkummer.github.io/git-flow-cheatsheet/) by Daniel Kummer:
+## Credits
 
-Huge shoutout [to Kirill Likhodedov](https://github.com/klikh), who wrote much of the original git4idea plugin, without which this plugin could not exist
-
-## Online Installation
-
-Download the latest zip from the [releases page](https://github.com/fakkio/gitflow4idea-next/releases) and install it from disk (see below). Uninstall "Git Flow Integration Plus" first: the two plugins cannot be installed side by side.
-
-**The plugin requires that you have gitflow installed, either the [AVH edition](https://github.com/petervanderdoes/gitflow), [git-flow-next](https://github.com/gittower/git-flow-next) or gitflow-cjs. This is because the [Vanilla Git Flow](https://github.com/nvie/gitflow) hasn't been maintained in years.** See this page [for details](https://github.com/fakkio/gitflow4idea-next/blob/develop/GITFLOW_VERSION.md)
-
-## Offline Installation
-download path: https://github.com/fakkio/gitflow4idea-next/releases
-
-Installation document:https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk
-
-**The plugin requires that you have gitflow installed, either the [AVH edition](https://github.com/petervanderdoes/gitflow), [git-flow-next](https://github.com/gittower/git-flow-next) or gitflow-cjs. This is because the [Vanilla Git Flow](https://github.com/nvie/gitflow) hasn't been maintained in years.** See this page [for details](https://github.com/fakkio/gitflow4idea-next/blob/develop/GITFLOW_VERSION.md)
-
-## Caveats
-
-While the plugin is operational and contains all basic functions (init/feature/release/hotfix), it may contains bugs. With your help I'll be able to find and zap them all.
-
-## Helping out
-
-This project is under active development.
-If you encounter any bug or an issue, I encourage you to add the them to the [Issues list](https://github.com/fakkio/gitflow4idea-next/issues) on Github.
-Feedback and suggestions are also very welcome.
+- [Opher Vishnia](https://github.com/OpherV) wrote the original [gitflow4idea](https://github.com/OpherV/gitflow4idea).
+- [Rubin Carter](https://github.com/RubinCarter) maintained [Git Flow Integration Plus](https://github.com/RubinCarter/gitflow4idea-plus) and added the git-flow-next and gitflow-cjs support.
+- [Kirill Likhodedov](https://github.com/klikh) wrote much of the git4idea plugin this one builds on.
 
 ## License
 
-This plugin is under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html).
-Copyright 2013-2020, Opher Vishnia.
-
-## Who and why
-
-This plugin was created by [Opher Vishnia](http://www.opherv.com), after I couldn't find any similar implementation.
-I saw this [suggestion page](http://youtrack.jetbrains.com/issue/IDEA-65491) on the JetBrains site has more than 220 likes and 80 comments, and decided to take up the gauntlet :)
-
-This plugin is forked from original https://github.com/OpherV/gitflow4idea .
-
-
-
+[Apache License 2.0](LICENSE.txt). Copyright 2013-2020 Opher Vishnia and contributors.
