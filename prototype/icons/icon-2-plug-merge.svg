@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <!-- continuation: the plug's two prongs are two branches that merge into one line -->
+  <rect x="1" y="1" width="38" height="38" rx="9" fill="#2c3e50"/>
+  <g fill="none" stroke-width="3" stroke-linecap="round">
+    <path d="M14.5 8 V17" stroke="#1abc9c"/>
+    <path d="M25.5 8 V17" stroke="#f1c40f"/>
+    <path d="M20 27 V34" stroke="#ecf0f1"/>
+  </g>
+  <circle cx="14.5" cy="8" r="3" fill="#1abc9c"/>
+  <circle cx="25.5" cy="8" r="3" fill="#f1c40f"/>
+  <rect x="9" y="16" width="22" height="11.5" rx="3.5" fill="#ecf0f1"/>
+  <circle cx="20" cy="34" r="3" fill="#ecf0f1"/>
+  <path d="M14.5 19.5 C14.5 23 20 21.5 20 25 M25.5 19.5 C25.5 23 20 21.5 20 25" fill="none" stroke="#2c3e50" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

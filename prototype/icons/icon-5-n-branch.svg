@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <!-- new: an "N" for Next drawn as a branch that leaves one line and joins another -->
+  <circle cx="20" cy="20" r="19" fill="#1abc9c"/>
+  <g fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round">
+    <path d="M13 29 V11"/>
+    <path d="M27 29 V11"/>
+    <path d="M13 11 C13 22 27 18 27 29"/>
+  </g>
+  <circle cx="13" cy="11" r="3.4" fill="#ffffff"/>
+  <circle cx="27" cy="29" r="3.4" fill="#f1c40f"/>
+  <circle cx="13" cy="29" r="2.4" fill="#16a085" stroke="#ffffff" stroke-width="1.6"/>
+  <circle cx="27" cy="11" r="2.4" fill="#16a085" stroke="#ffffff" stroke-width="1.6"/>
+</svg>

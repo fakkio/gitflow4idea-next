@@ -1,0 +1,40 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>PROTOTYPE - plugin icon proposals, round 2</title>
+<!-- PROTOTYPE, throwaway: five proposals for pluginIcon.svg, shown at real size on light and dark IDE backgrounds. -->
+<style>
+  body { font: 14px/1.4 system-ui, sans-serif; margin: 24px; background: #dfe3e8; color: #2c3e50; }
+  h1 { font-size: 18px; } .note { max-width: 70ch; }
+  .card { background: #fff; border-radius: 10px; padding: 16px; margin: 16px 0; }
+  .card h2 { font-size: 15px; margin: 0 0 2px; } .card p { margin: 0 0 12px; color: #7f8c8d; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .sw { display: flex; align-items: center; gap: 18px; padding: 14px 18px; border-radius: 8px; }
+  .light { background: #f7f8fa; } .dark { background: #2b2d30; color: #dfe1e5; }
+  .list { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; min-width: 250px; }
+  .list small { display: block; opacity: .65; }
+  .tag { font-size: 11px; background: #ecf0f1; border-radius: 4px; padding: 1px 6px; margin-left: 6px; color: #7f8c8d; }
+</style>
+<h1>PROTOTYPE, round 2: icon proposals for Git Flow Integration Next</h1>
+<p class="note">Each icon at 40px (Marketplace and plugin list), 80px and 160px, on the light and dark IDE backgrounds. The 40px one is the size that matters.</p>
+<div id="out"></div>
+<script>
+  const icons = [
+    ["icon-2-plug-merge.svg", "2. Merging plug", "original", "Dark tile, white plug, the two prongs merge into one line."],
+    ["icon-2a-plug-merge-open.svg", "2a. Merging plug, open", "variant", "No tile and more colour: blue plug, orange and red branches, white merge mark."],
+    ["icon-2b-plug-merge-tilted.svg", "2b. Merging plug, tilted", "variant", "Tilted 45 degrees like the classic plug icon, on an amethyst tile."],
+    ["icon-5-n-branch.svg", "5. N branch", "original", "Turquoise circle, white N drawn as a branch."],
+    ["icon-5a-n-branch-tile.svg", "5a. N branch, dark tile", "variant", "Square dark tile; only the branch stroke is coloured."],
+    ["icon-5b-n-branch-open.svg", "5b. N branch, open", "variant", "No background, bigger N, one colour per stroke."],
+  ];
+
+  const sizes = [40, 80, 160];
+  document.getElementById("out").innerHTML = icons.map(([f, t, kind, d]) => `
+    <div class="card"><h2>${t}<span class="tag">${kind}</span></h2><p>${d} <code>${f}</code></p>
+      <div class="row">${["light", "dark"].map(m => `
+        <div class="sw ${m}">${sizes.map(s => `<img src="${f}" width="${s}" height="${s}">`).join("")}</div>`).join("")}
+      </div>
+      <div class="row" style="margin-top:12px">${["light", "dark"].map(m => `
+        <div class="list ${m}"><img src="${f}" width="40" height="40"><div><b>Git Flow Integration Next</b><small>fakkio &middot; VCS Integration</small></div></div>`).join("")}
+      </div>
+    </div>`).join("");
+</script>

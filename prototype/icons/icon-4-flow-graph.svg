@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <!-- new: the git-flow model itself, main / develop / feature lanes -->
+  <rect x="1" y="1" width="38" height="38" rx="9" fill="#2c3e50"/>
+  <g fill="none" stroke-width="2.6" stroke-linecap="round">
+    <path d="M6 30 H34" stroke="#e74c3c"/>
+    <path d="M8 30 C13 30 10 20 15 20 H34" stroke="#3498db"/>
+    <path d="M15 20 C20 20 17 10 22 10 H24 C29 10 26 20 31 20" stroke="#2ecc71"/>
+  </g>
+  <g stroke="#2c3e50" stroke-width="1.2">
+    <circle cx="8" cy="30" r="2.8" fill="#e74c3c"/>
+    <circle cx="32" cy="30" r="2.8" fill="#e74c3c"/>
+    <circle cx="15" cy="20" r="2.8" fill="#3498db"/>
+    <circle cx="31" cy="20" r="2.8" fill="#3498db"/>
+    <circle cx="23" cy="10" r="2.8" fill="#2ecc71"/>
+  </g>
+</svg>
