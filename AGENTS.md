@@ -12,6 +12,6 @@ Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-
 
 Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root, created lazily. See `docs/agents/domain.md`.
 
-### Build and release
+## Build and release
 
 Building a version for the user to test: bump, then build. See `docs/agents/build-and-release.md`.
