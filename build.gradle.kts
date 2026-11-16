@@ -1,41 +1,91 @@
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask.FailureLevel
+
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.14.2"
+    id("org.jetbrains.intellij.platform") version "2.20.1"
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
-group = "gitflow4idea-plus"
-version = "0.8.1-beta.2"
+group = "com.github.fakkio"
+version = "0.9.0"
+
+// Platform to compile against. Pass -PplatformLocalPath=<IDE install dir> to reuse a
+// locally installed IDE instead of downloading one.
+val platformVersion = providers.gradleProperty("platformVersion").getOrElse("2026.3")
+val platformLocalPath = providers.gradleProperty("platformLocalPath").orNull
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
+
+    intellijPlatform {
+        if (platformLocalPath != null) {
+            local(platformLocalPath)
+        } else {
+            intellijIdea(platformVersion)
+        }
+        bundledPlugins("Git4Idea", "com.intellij.tasks")
+        testFramework(TestFrameworkType.Platform)
+        pluginVerifier()
+    }
 }
 
-intellij {
-    version.set("2023.1")
-    plugins.set(listOf("Git4Idea", "tasks"))
-    updateSinceUntilBuild.set(false)
-}
+intellijPlatform {
+    pluginVerification {
+        failureLevel = listOf(
+            FailureLevel.COMPATIBILITY_PROBLEMS,
+            FailureLevel.INTERNAL_API_USAGES,
+            FailureLevel.MISSING_DEPENDENCIES,
+            FailureLevel.INVALID_PLUGIN,
+        )
+        ides {
+            if (platformLocalPath != null) {
+                local(platformLocalPath)
+            } else {
+                recommended()
+            }
+        }
+    }
 
-tasks {
-    patchPluginXml {
-        pluginId.set("Gitflow-Fix")
-        pluginDescription.set("""
-            <H2>Git Flow Integration for Intellij</H2>
+    // Marketplace upload: set PUBLISH_TOKEN in the environment.
+    publishing {
+        token = providers.environmentVariable("PUBLISH_TOKEN")
+    }
+
+    pluginConfiguration {
+        id = "com.github.fakkio.gitflow4idea-next"
+        version = project.version.toString()
+        ideaVersion {
+            sinceBuild = "263"
+            untilBuild = provider { null }
+        }
+        description = """
+            <H2>Git Flow Integration Next</H2>
             An intelliJ plugin providing a UI layer for git-flow, which in itself is a collection of Git extensions to provide high-level repository operations for Vincent <a href="https://nvie.com/posts/a-successful-git-branching-model/">Driessen's branching model</a>
-        """)
-        version.set("${project.version}")
-        sinceBuild.set("231.8109.175")
-        changeNotes.set("""
+            <p>Works with git-flow (AVH Edition), git-flow-next and gitflow-cjs.</p>
+            <p>Maintained fork of <a href="https://github.com/RubinCarter/gitflow4idea-plus">Git Flow Integration Plus</a> by Rubin Carter, itself based on <a href="https://github.com/OpherV/gitflow4idea">gitflow4idea</a> by Opher Vishnia, kept compatible with current IDE builds.</p>
+        """
+        changeNotes = """
+            <H2>Changelog for 0.9.0</H2>
+            <ul>
+              <li>Forked from Git Flow Integration Plus and renamed to Git Flow Integration Next</li>
+              <li>Support for 2026.3 build</li>
+              <li>Includes the git-flow-next / gitflow-cjs support from the unreleased 0.8.1 betas</li>
+              <li>Replaced internal and removed platform API usages</li>
+              <li>Build migrated to IntelliJ Platform Gradle Plugin 2.x</li>
+            </ul>
+
             <H2>Changelog for 0.8.1-beta.2</H2>
             <ul>
               <li>Support git-flow-next implementation #45</li>
@@ -146,6 +196,6 @@ tasks {
             </ul>
         
             <p>Note - if you see 'no gitflow' in the status bar you will need to re-init using <code>git flow init -f</code></p>
-        """)
+        """
     }
 }
