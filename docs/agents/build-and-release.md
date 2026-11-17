@@ -22,7 +22,7 @@ Done when the zip's filename carries the bumped version and `BUILD SUCCESSFUL` w
 3. Push `main`, `develop` and the tag: `git push origin main develop v<version>`.
 4. The tag triggers `.github/workflows/release.yml`: it checks that the tag matches `version`, builds the zip and creates a **draft** GitHub Release with the zip attached and the notes from `CHANGELOG.md` (`.github/scripts/release-notes.sh`). Check the draft, then publish it with `gh release edit v<version> --draft=false`. Drafts show up only for people with write access, not in `gh release list`.
 
-Not automated: publishing to the JetBrains Marketplace (needs `PUBLISH_TOKEN`).
+5. Publishing the draft fires `.github/workflows/publish.yml`, which checks the tag against `version` and runs `./gradlew publishPlugin` with the `PUBLISH_TOKEN` repository secret. JetBrains still reviews every upload before it goes live. To publish by hand instead, run `./gradlew publishPlugin` with `PUBLISH_TOKEN` set in the environment.
 
 ## The tasks plugin
 
