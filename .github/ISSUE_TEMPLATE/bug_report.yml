@@ -1,0 +1,101 @@
+name: Bug report
+description: Something does not work as expected
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. A complete report gets a fix faster.
+        Please search the [existing issues](https://github.com/fakkio/gitflow4idea-next/issues?q=is%3Aissue) first, and make sure you run the latest plugin version.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What goes wrong?
+      description: One or two sentences. Include the exact text of any error message or notification.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Numbered, starting from a clean state, so that someone else can follow them.
+      placeholder: |
+        1. Open a project with a git-flow repository
+        2. Click Gitflow in the status bar
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen instead.
+    validations:
+      required: true
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      description: Settings | Plugins | Installed | Git Flow Integration Next.
+      placeholder: "0.9.5"
+    validations:
+      required: true
+  - type: input
+    id: ide
+    attributes:
+      label: IDE and build
+      description: Help | About, then the copy icon.
+      placeholder: "IntelliJ IDEA 2026.3 (Ultimate Edition), build #IU-263.7307.200"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "Windows 11"
+    validations:
+      required: true
+  - type: dropdown
+    id: implementation
+    attributes:
+      label: git-flow implementation
+      description: Run `git flow version` in a terminal if you are not sure. The original nvie/gitflow 0.4.1 is not supported.
+      options:
+        - git-flow-next
+        - git-flow AVH Edition
+        - gitflow-cjs
+        - Other / not sure
+    validations:
+      required: true
+  - type: input
+    id: gitflow-version
+    attributes:
+      label: git-flow version
+      description: Output of `git flow version`.
+      placeholder: "1.12.3 (AVH Edition)"
+    validations:
+      required: true
+  - type: input
+    id: git-version
+    attributes:
+      label: Git version
+      description: Output of `git --version`.
+  - type: textarea
+    id: gitflow-config
+    attributes:
+      label: Repository git-flow configuration
+      description: Only if the problem is tied to a repository. Output of `git config --get-regexp '^gitflow'`.
+      render: shell
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and stack trace
+      description: |
+        For crashes, errors and anything that does nothing. Help | Show Log in Explorer opens `idea.log`: paste the lines around the time of the problem.
+        For more detail, add `#gitflow` in Help | Diagnostic Tools | Debug Log Settings, then reproduce again. If the IDE shows the red "IDE Internal Errors" icon, copy the stack trace from it.
+      render: text
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Screenshots, a link to a related issue, or an idea for the fix.
