@@ -15,7 +15,7 @@ repositories {
 }
 
 group = "com.github.fakkio"
-version = "0.9.3"
+version = "0.9.4"
 
 // Platform to compile against. Pass -PplatformLocalPath=<IDE install dir> to reuse a
 // locally installed IDE instead of downloading one.
@@ -67,7 +67,16 @@ dependencies {
         } else {
             intellijIdea(platformVersion)
         }
-        bundledPlugins("Git4Idea", "com.intellij.tasks")
+        bundledPlugins("Git4Idea")
+        // com.intellij.tasks is bundled with PhpStorm and the older IDEs. IntelliJ IDEA 2026.3
+        // bundles only com.intellij.platform.tasks (the API classes), so there the issue-tracker
+        // plugin comes from the Marketplace. A local IDE is used as it is.
+        if (platformLocalPath != null) {
+            bundledPlugins("com.intellij.tasks")
+        } else {
+            bundledPlugins("com.intellij.platform.tasks")
+            compatiblePlugins("com.intellij.tasks")
+        }
         testFramework(TestFrameworkType.Platform)
         pluginVerifier()
     }
@@ -133,6 +142,11 @@ intellijPlatform {
             <p>Source code and issue tracker: <a href="https://github.com/fakkio/gitflow4idea-next">github.com/fakkio/gitflow4idea-next</a></p>
         """
         changeNotes = """
+            <H2>Changelog for 0.9.4</H2>
+            <ul>
+              <li>Fix the "No display name specified" PluginException logged when opening Settings #1</li>
+            </ul>
+
             <H2>Changelog for 0.9.3</H2>
             <ul>
               <li>Corrected the plugin description</li>

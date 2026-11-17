@@ -15,7 +15,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
-      # The default platform (IntelliJ IDEA 2026.3) no longer bundles com.intellij.tasks,
-      # so compile and verify against a version that does.
+      # Compiles against the default platform (IntelliJ IDEA 2026.3); verifies on the oldest supported IDE.
       - name: Build and verify
-        run: ./gradlew buildPlugin verifyPlugin -PplatformVersion=2025.2.4 -PverifyIdes=IC-2024.2.6
+        run: ./gradlew buildPlugin verifyPlugin -PverifyIdes=IC-2024.2.6
