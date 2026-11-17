@@ -1,38 +1,81 @@
-* **I'm submitting a ...**
-  - [ ] bug report
-  - [ ] feature request
-  - [ ] puppy => You're not submitting a puppy. I already have one and he's [adorable](https://twitter.com/Opherv/status/974341249099542528)
+<!--
+Thanks for taking the time to report this. A complete report gets a fix faster.
+Before you submit, please:
+  - search the existing issues (open and closed) for the same problem;
+  - make sure you run the latest plugin version;
+  - delete the sections that don't apply and the comments like this one.
+-->
 
+## Type
 
-* **What is the current behavior?**
+- [ ] Bug report
+- [ ] Feature request
+- [ ] Question
 
+## Summary
 
+<!-- One or two sentences: what goes wrong, or what you would like to be able to do. -->
 
-* **Is this a bug? Sorry about that. If so give me explicit details how to reproduce:**
+## Steps to reproduce
 
-1. Open IntelliJ
-2. ???
-3. Profit
+<!-- For a bug. Numbered, starting from a clean state, so that someone else can follow them. -->
 
-* **What is the expected behavior?**
+1.
+2.
+3.
 
+## Expected behavior
 
+<!-- What you expected to happen. For a feature request: the behavior you propose. -->
 
-* **What is the motivation / use case for changing the behavior?**
+## Actual behavior
 
-* **Please tell me about your environment:**
-  
-  - Gitflow4idea version: *find in IntelliJ settings plugins*
-  - Gitflow version: run in terminal `>git flow version`
-  
-  - *IntelliJ Help -> about > click copy icon and paste here. Should look like this:*
-  ~~~~
-    IntelliJ IDEA 2018.1.1 EAP (Community Edition)
-    Build #IC-181.4445.4, built on March 29, 2018
-    JRE: 1.8.0_152-release-1136-b27 x86_64
-    JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
-  ~~~~
+<!-- What happened instead. Include the exact text of any error message or notification. -->
 
+## Motivation / use case
 
+<!-- For a feature request: which problem it solves and how you work today without it. -->
 
-* **Other information** (e.g. detailed explanation, stacktrace, related issues, suggestions how to fix, links for me to have context words of praises, pictures of puppies (again with the puppy??) )
+## Environment
+
+- **Plugin version:** <!-- Settings | Plugins | Installed | Gitflow -->
+- **IDE and build:** <!-- Help | About | copy icon, e.g. "IntelliJ IDEA 2026.3 (Ultimate Edition), build #IU-263.7307.200" -->
+- **Operating system:**
+- **git-flow implementation and version:** <!-- Run `git flow version` in a terminal, and say which one it is: git-flow-next, git-flow AVH, gitflow-cjs. -->
+- **Git version:** <!-- `git --version` -->
+
+## Repository setup
+
+<!-- Relevant only if the problem is tied to a repository. Skip it otherwise. -->
+
+- git-flow initialized in the repository: <!-- yes / no -->
+- Branch names and prefixes in use: <!-- default, or the custom ones you configured at init -->
+- Output of `git config --get-regexp '^gitflow'`:
+
+```
+```
+
+## Logs and stack trace
+
+<!--
+For crashes, errors and anything that "does nothing":
+  - Help | Show Log in Explorer (or Finder / Files) opens idea.log. Paste the relevant lines, around the time of the problem.
+  - Help | Diagnostic Tools | Debug Log Settings..., add `#gitflow` to get more detail, then reproduce again.
+  - If the IDE shows the red "IDE Internal Errors" icon, copy the stack trace from it.
+Wrap long output in a collapsible block:
+
+<details><summary>idea.log</summary>
+
+```
+...
+```
+
+</details>
+-->
+
+```
+```
+
+## Additional context
+
+<!-- Screenshots, a link to a related issue, or an idea for the fix. -->
