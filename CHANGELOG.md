@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.5] - 2026-11-17
+
+### Changed
+- Include the Apache 2.0 license in the plugin.
+
 ## [0.9.4] - 2026-11-17
 
 ### Fixed
@@ -40,7 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fork Git Flow Integration Plus and rename it to Git Flow Integration Next.
 - Replace the internal and removed platform APIs the plugin was using.
 
-[Unreleased]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.4...HEAD
+[Unreleased]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.5...HEAD
+[0.9.5]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.4...v0.9.5
 [0.9.4]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.3...v0.9.4
 [0.9.3]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.2...v0.9.3
 [0.9.2]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.1...v0.9.2
