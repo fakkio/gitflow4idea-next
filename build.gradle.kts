@@ -29,6 +29,35 @@ tasks.withType<JavaCompile>().configureEach {
     options.release = javaRelease
 }
 
+// Fails buildPlugin when src/ changed after the commit that last set `version`, so a rebuilt
+// zip never carries an already-released version number. Skipped on CI, or with -PskipVersionCheck.
+val checkVersionBump by tasks.registering {
+    val root = layout.projectDirectory.asFile
+    val skip = System.getenv("CI") != null || providers.gradleProperty("skipVersionCheck").isPresent
+    onlyIf { !skip }
+    doLast {
+        fun git(vararg args: String): String {
+            val process = ProcessBuilder("git", *args).directory(root).redirectErrorStream(true).start()
+            val output = process.inputStream.bufferedReader().readText().trim()
+            process.waitFor()
+            return output
+        }
+        val bumpCommit = git("log", "-1", "--format=%H", "-G", "^version = \"", "--", "build.gradle.kts")
+        if (bumpCommit.isNotEmpty()) {
+            val sourceChanged = git("log", "$bumpCommit..HEAD", "--oneline", "--", "src").isNotEmpty() ||
+                git("status", "--porcelain", "--", "src").isNotEmpty()
+            if (sourceChanged) {
+                throw GradleException(
+                    "src/ changed since version ${project.version} was set (commit ${bumpCommit.take(7)}). " +
+                        "Bump `version` in build.gradle.kts by semver and commit it before building."
+                )
+            }
+        }
+    }
+}
+
+tasks.named("buildPlugin") { dependsOn(checkVersionBump) }
+
 dependencies {
     testImplementation("junit:junit:4.13.2")
 
