@@ -15,3 +15,7 @@ Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root, created lazi
 ## Build and release
 
 Building a version for the user to test: bump, then build. See `docs/agents/build-and-release.md`.
+
+## Language
+
+This is a public repository: write code, comments, commit messages, issues, pull requests and docs in English, whatever language the conversation is in.
