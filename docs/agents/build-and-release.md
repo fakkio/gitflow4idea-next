@@ -4,7 +4,7 @@ Hand the user a zip only after the version has been bumped. `buildPlugin` enforc
 
 ## Steps
 
-1. Bump `version` in `build.gradle.kts` by semver: fix = patch, feature = minor, breaking = major. Add a `Changelog for X.Y.Z` entry to `changeNotes` and commit (history has `release X.Y.Z` commits to follow).
+1. Bump `version` in `build.gradle.kts` by semver: fix = patch, feature = minor, breaking = major. Promote `CHANGELOG.md`'s `[Unreleased]` section to the new version and mirror it into `changeNotes` (`docs/agents/changelog.md`). Commit as `🔖: Release v<version>` (`docs/agents/commits.md`).
 2. Build with the JDK bundled in PhpStorm (the default Java here is 8, Gradle needs 17+):
 
    ```
