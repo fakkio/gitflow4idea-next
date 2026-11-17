@@ -29,6 +29,11 @@ tasks.withType<JavaCompile>().configureEach {
     options.release = javaRelease
 }
 
+// Ship the license inside the plugin jar (Apache 2.0, section 4a), from the single copy at the repo root.
+tasks.processResources {
+    from("LICENSE.txt") { into("META-INF") }
+}
+
 // Fails buildPlugin when src/ changed after the commit that last set `version`, so a rebuilt
 // zip never carries an already-released version number. Skipped on CI, or with -PskipVersionCheck.
 val checkVersionBump by tasks.registering {
