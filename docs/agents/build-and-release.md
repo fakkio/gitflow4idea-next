@@ -15,6 +15,15 @@ Hand the user a zip only after the version has been bumped. `buildPlugin` enforc
 
 Done when the zip's filename carries the bumped version and `BUILD SUCCESSFUL` was seen.
 
+## Releasing
+
+1. `git flow release start <version>`, then bump the version, promote the changelog and commit as `🔖: Release v<version>` (step 1 above), and check that `buildPlugin` passes.
+2. Finish with `git flow release finish -m "🔖: Release v<version>" <version>`. To get gitmoji merge messages, run it with `GIT_MERGE_AUTOEDIT=yes` and `GIT_EDITOR` set to a `sed -i` script that rewrites the first line (`Merge branch 'release/X'` becomes `🔀: Merge release/X into main`; `Merge tag 'vX' into develop` becomes `🔀: Merge tag vX into develop`).
+3. Push `main`, `develop` and the tag: `git push origin main develop v<version>`.
+4. The tag triggers `.github/workflows/release.yml`: it checks that the tag matches `version`, builds the zip and creates a **draft** GitHub Release with the zip attached and the notes from `CHANGELOG.md` (`.github/scripts/release-notes.sh`). Check the draft, then publish it with `gh release edit v<version> --draft=false`. Drafts show up only for people with write access, not in `gh release list`.
+
+Not automated: publishing to the JetBrains Marketplace (needs `PUBLISH_TOKEN`).
+
 ## The tasks plugin
 
 The plugin depends on `com.intellij.tasks`. PhpStorm and the older IDEs bundle it. IntelliJ IDEA 2026.3 bundles only `com.intellij.platform.tasks` (the API classes), so `build.gradle.kts` takes `com.intellij.tasks` from the Marketplace for the default platform. With `-PplatformLocalPath=<IDE dir>` the local IDE is used as it is.
