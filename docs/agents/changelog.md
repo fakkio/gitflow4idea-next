@@ -21,7 +21,7 @@
 [0.9.4]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.3...v0.9.4
 ```
 
-Newest first. Once the releases are tagged (`v<version>`, the git-flow version-tag prefix), every version section, including `[Unreleased]`, gets a compare-link footer at the bottom of the file, diffed against the tag directly before it. The 0.9.x sections predate the tags and have no links.
+Newest first. Once the releases are tagged (`v<version>`, the git-flow version-tag prefix), every version section, including `[Unreleased]`, gets a compare-link footer at the bottom of the file, diffed against the tag directly before it. The first version links to its release tag, as there is nothing to compare it with.
 
 ## Categories
 
