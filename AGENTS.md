@@ -19,3 +19,11 @@ Building a version for the user to test: bump, then build. See `docs/agents/buil
 ## Language
 
 This is a public repository: write code, comments, commit messages, issues, pull requests and docs in English, whatever language the conversation is in.
+
+## Commits (gitmoji)
+
+Every commit leads with a gitmoji for its type (`<emoji>: <description>`), Conventional Commits structure otherwise. See `docs/agents/commits.md`.
+
+## Changelog (Keep a Changelog)
+
+Every commit or merge onto `develop` that a user can see adds its entry under `CHANGELOG.md`'s `[Unreleased]` section as it happens; a release renames that section to the version. See `docs/agents/changelog.md`.

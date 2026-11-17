@@ -95,4 +95,8 @@ Open an issue on this repository's [issue tracker](https://github.com/fakkio/git
 
 ## License
 
-[Apache License 2.0](LICENSE.txt). Copyright 2013-2020 Opher Vishnia and contributors.
+[Apache License 2.0](LICENSE.txt).
+
+Copyright 2013-2026 Opher Vishnia, Rubin Carter, Fabio Lazzaroni and contributors.
+
+This is a modified version of [Git Flow Integration Plus](https://github.com/RubinCarter/gitflow4idea-plus), itself derived from [gitflow4idea](https://github.com/OpherV/gitflow4idea), both released under the Apache License 2.0. The changes made to the original files are recorded in the git history; those since 0.9.0 are by Fabio Lazzaroni.
