@@ -21,6 +21,6 @@ The plugin depends on `com.intellij.tasks`. PhpStorm and the older IDEs bundle i
 
 ## CI
 
-`.github/workflows/build.yml` runs `buildPlugin verifyPlugin` on push and pull requests, against the default platform, and verifies on IC-2024.2.6. The version check is skipped there (`CI` is set); locally, `-PskipVersionCheck` skips it.
+`.github/workflows/build.yml` runs `buildPlugin verifyPlugin` on push and pull requests, against the default platform, and verifies on IC-2024.2.6 and PS-2026.3. The version check is skipped there (`CI` is set); locally, `-PskipVersionCheck` skips it.
 
-Each IDE the verifier downloads takes several gigabytes: check free disk before adding one. Verifying on IU-2026.3 reports `com.intellij.tasks: Unavailable`, and PS-2026.3 is untried.
+Each IDE the verifier downloads takes several gigabytes: check free disk before adding one. Verifying on IU-2026.3 reports `com.intellij.tasks: Unavailable`..

@@ -15,6 +15,6 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
-      # Compiles against the default platform (IntelliJ IDEA 2026.3); verifies on the oldest supported IDE.
+      # Compiles against the default platform (IntelliJ IDEA 2026.3); verifies on the oldest supported IDE and on PhpStorm 2026.3.
       - name: Build and verify
-        run: ./gradlew buildPlugin verifyPlugin -PverifyIdes=IC-2024.2.6
+        run: ./gradlew buildPlugin verifyPlugin -PverifyIdes=IC-2024.2.6,PS-2026.3
