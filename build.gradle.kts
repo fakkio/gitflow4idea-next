@@ -15,7 +15,7 @@ repositories {
 }
 
 group = "com.github.fakkio"
-version = "0.9.4"
+version = "0.9.5"
 
 // Platform to compile against. Pass -PplatformLocalPath=<IDE install dir> to reuse a
 // locally installed IDE instead of downloading one.
@@ -147,6 +147,11 @@ intellijPlatform {
             <p>Source code and issue tracker: <a href="https://github.com/fakkio/gitflow4idea-next">github.com/fakkio/gitflow4idea-next</a></p>
         """
         changeNotes = """
+            <H2>Changelog for 0.9.5</H2>
+            <ul>
+              <li>Include the Apache 2.0 license in the plugin</li>
+            </ul>
+
             <H2>Changelog for 0.9.4</H2>
             <ul>
               <li>Fix the "No display name specified" PluginException logged when opening Settings #1</li>
