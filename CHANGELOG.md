@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Build the status bar popup with the public `JBPopupFactory` API instead of an internal class scheduled for removal (#10).
+
 ## [0.9.5] - 2026-11-17
 
 ### Changed
