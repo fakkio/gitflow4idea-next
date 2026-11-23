@@ -67,9 +67,11 @@ public class GitflowWidget extends GitBranchWidget implements GitRepositoryChang
     private volatile String myTooltip = "";
 
     private GitflowPopupGroup popupGroup;
+    private final Project project;
 
     public GitflowWidget(@NotNull Project project) {
         super(project);
+        this.project = project;
         project.getMessageBus().connect().subscribe(GitRepository.GIT_REPO_CHANGE, this);
     }
 
@@ -288,25 +290,25 @@ public class GitflowWidget extends GitBranchWidget implements GitRepositoryChang
     }
 
     public boolean getIsSupportedVersion(){
-        GitflowVersionTester versionTester = GitflowVersionTester.forProject(myProject);
+        GitflowVersionTester versionTester = GitflowVersionTester.forProject(project);
         return versionTester.hasVersionBeenTested() && versionTester.isSupportedVersion();
     }
 
     public boolean getHasVersionBeenTested(){
-        return GitflowVersionTester.forProject(myProject).hasVersionBeenTested();
+        return GitflowVersionTester.forProject(project).hasVersionBeenTested();
     }
 
     private void initVersionCheck(){
 
         // init the gitflow cli version check in a new thread and not on the EDT
-        String version = GitflowVersionTester.forProject(myProject).getVersion();
+        String version = GitflowVersionTester.forProject(project).getVersion();
         if (version == null) {
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    VcsRoot[] vcsRoots = ProjectLevelVcsManager.getInstance(myProject).getAllVcsRoots();
+                    VcsRoot[] vcsRoots = ProjectLevelVcsManager.getInstance(project).getAllVcsRoots();
                     if (vcsRoots.length > 0 && vcsRoots[0].getVcs() instanceof GitVcs) {
-                        GitflowVersionTester.forProject(myProject).init();
+                        GitflowVersionTester.forProject(project).init();
                     }
 
                 }
