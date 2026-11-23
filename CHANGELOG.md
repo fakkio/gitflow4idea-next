@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Build the status bar popup with the public `JBPopupFactory` API instead of an internal class scheduled for removal (#10).
+- Answer the `git flow init` prompts through the public process API instead of `GitTextHandler` internals scheduled for removal, and stop using the deprecated `ProcessAdapter` (#11, #9).
 
 ## [0.9.5] - 2026-11-17
 
