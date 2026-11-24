@@ -107,3 +107,6 @@ fabric.properties
 .intellijPlatform
 
 .claude/
+
+# Local secrets (e.g. PUBLISH_TOKEN written by the publishing wizard)
+.env

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.6] - 2026-11-24
+
+### Changed
+- Build the status bar popup with the public `JBPopupFactory` API instead of an internal class scheduled for removal (#10).
+- Answer the `git flow init` prompts through the public process API instead of `GitTextHandler` internals scheduled for removal, and stop using the deprecated `ProcessAdapter` (#11, #9).
+
 ## [0.9.5] - 2026-11-17
 
 ### Changed
@@ -45,7 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fork Git Flow Integration Plus and rename it to Git Flow Integration Next.
 - Replace the internal and removed platform APIs the plugin was using.
 
-[Unreleased]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.5...HEAD
+[Unreleased]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.6...HEAD
+[0.9.6]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.5...v0.9.6
 [0.9.5]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.4...v0.9.5
 [0.9.4]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.3...v0.9.4
 [0.9.3]: https://github.com/fakkio/gitflow4idea-next/compare/v0.9.2...v0.9.3

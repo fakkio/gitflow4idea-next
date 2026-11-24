@@ -14,7 +14,7 @@ Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root, created lazi
 
 ## Build and release
 
-Building a version for the user to test: bump, then build. See `docs/agents/build-and-release.md`.
+Building a version for the user to test, or releasing one: bump, then build; a pushed `v*` tag prepares the GitHub Release. See `docs/agents/build-and-release.md`.
 
 ## Language
 

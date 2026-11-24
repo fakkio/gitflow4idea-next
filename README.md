@@ -1,10 +1,10 @@
-# Git Flow Integration Next
+# README
 
 A JetBrains IDE plugin that puts [git-flow](https://nvie.com/posts/a-successful-git-branching-model/) one click away: start, publish, track and finish features, releases, hotfixes and bugfixes without leaving the IDE.
 
 It is a maintained fork of [Git Flow Integration Plus](https://github.com/RubinCarter/gitflow4idea-plus), which stopped loading in recent IDE versions.
 
-![The Gitflow popup in the status bar](docs/img/gitflow.png)
+<img src="docs/screenshots/status-bar-menu-feature.png" alt="The Gitflow popup in the status bar" width="260">
 
 ## Compatibility
 
@@ -44,6 +44,9 @@ Open a project that is a Git repository. A **Gitflow** widget appears in the sta
 
 - **Status bar widget**: click it for the list of actions that apply to the current branch.
 - **Menu**: the same actions live under **Git > Gitflow**.
+
+  <img src="docs/screenshots/git-gitflow-menu-feature.png" alt="The Git > Gitflow menu" width="520">
+
 - **Shortcut**: assign a key to *Gitflow Operations Popup…* in **Settings > Keymap**.
 
 | Branch type | Actions |
@@ -60,7 +63,11 @@ With the bundled *Task Management* plugin, the **Open Task** and **Close Task** 
 
 ### Options
 
-**Settings > Other Settings > Gitflow** holds the per-project defaults for each branch type, for example:
+**Settings > Other Settings > Gitflow** holds the per-project defaults for each branch type:
+
+<img src="docs/screenshots/settings.png" alt="The Gitflow settings page" width="640">
+
+For example:
 
 - fetch from origin before starting or finishing
 - keep the local or remote branch after finishing

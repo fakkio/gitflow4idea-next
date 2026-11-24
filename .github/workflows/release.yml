@@ -1,0 +1,39 @@
+name: Release
+
+# Pushing a version tag (git flow release finish creates it) builds the plugin and
+# prepares a draft GitHub Release with the zip attached. Publish the draft by hand.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Check that the tag matches the plugin version
+        run: |
+          tag_version="${GITHUB_REF_NAME#v}"
+          gradle_version=$(sed -n 's/^version = "\(.*\)"/\1/p' build.gradle.kts | head -1)
+          if [ "$tag_version" != "$gradle_version" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match version $gradle_version in build.gradle.kts" >&2
+            exit 1
+          fi
+      - name: Build the plugin
+        run: ./gradlew buildPlugin
+      - name: Create the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          zip="build/distributions/gitflow4idea-next-${version}.zip"
+          .github/scripts/release-notes.sh "$version" "$zip" > notes.md
+          gh release create "$GITHUB_REF_NAME" "$zip" --draft --title "$version" --notes-file notes.md
