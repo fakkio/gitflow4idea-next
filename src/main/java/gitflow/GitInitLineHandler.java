@@ -45,6 +45,7 @@ public class GitInitLineHandler extends GitLineHandler {
         });
         return process;
     }
+
     public void onTextAvailable(String s) {
         try {
             if (containsAnyIgnoreCase(s, "name for production releases", "trunk branch")) {
