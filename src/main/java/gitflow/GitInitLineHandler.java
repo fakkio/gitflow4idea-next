@@ -45,15 +45,6 @@ public class GitInitLineHandler extends GitLineHandler {
         });
         return process;
     }
-
-    public void onTextAvailable(@NotNull ProcessEvent event, @NotNull Key outputType) {
-                String s = event.getText();
-                GitInitLineHandler.this.onTextAvailable(s);
-            }
-        });
-        return process;
-    }
-
     public void onTextAvailable(String s) {
         try {
             if (containsAnyIgnoreCase(s, "name for production releases", "trunk branch")) {
