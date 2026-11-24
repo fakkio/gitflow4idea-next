@@ -2,12 +2,14 @@ package gitflow;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.process.KillableProcessHandler;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessListener;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.io.BaseOutputReader;
 import git4idea.commands.GitCommand;
 import git4idea.commands.GitLineHandler;
 import git4idea.util.GitVcsConsoleWriter;
@@ -36,7 +38,15 @@ public class GitInitLineHandler extends GitLineHandler {
 
     @Override
     protected OSProcessHandler createProcess(@NotNull GeneralCommandLine commandLine) throws ExecutionException {
-        OSProcessHandler process = super.createProcess(commandLine);
+        // Not super.createProcess: that reads output line by line, and the prompts end
+        // without a newline, so they would never reach the listener below.
+        OSProcessHandler process = new KillableProcessHandler(commandLine) {
+            @NotNull
+            @Override
+            protected BaseOutputReader.Options readerOptions() {
+                return BaseOutputReader.Options.NON_BLOCKING;
+            }
+        };
         process.addProcessListener(new ProcessListener() {
             @Override
             public void onTextAvailable(@NotNull ProcessEvent event, @NotNull Key outputType) {
