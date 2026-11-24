@@ -15,7 +15,7 @@ repositories {
 }
 
 group = "com.github.fakkio"
-version = "0.9.5"
+version = "0.9.6"
 
 // Platform to compile against. Pass -PplatformLocalPath=<IDE install dir> to reuse a
 // locally installed IDE instead of downloading one.
