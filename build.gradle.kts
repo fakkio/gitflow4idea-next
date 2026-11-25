@@ -15,7 +15,7 @@ repositories {
 }
 
 group = "com.github.fakkio"
-version = "0.9.7"
+version = "0.9.8"
 
 // Platform to compile against. Pass -PplatformLocalPath=<IDE install dir> to reuse a
 // locally installed IDE instead of downloading one.
@@ -147,9 +147,10 @@ intellijPlatform {
             <p>Source code and issue tracker: <a href="https://github.com/fakkio/gitflow4idea-next">github.com/fakkio/gitflow4idea-next</a></p>
         """
         changeNotes = """
-            <H2>Changelog for 0.9.7</H2>
+            <H2>Changelog for 0.9.8</H2>
             <ul>
               <li>Stop the IDE from freezing when the Gitflow status bar widget refreshes: the git config is now read in the background, and once instead of twice #17</li>
+              <li>Name the base branch in the notification shown after finishing a bugfix, instead of "null" #20</li>
             </ul>
 
             <H2>Changelog for 0.9.6</H2>
