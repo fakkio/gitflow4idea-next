@@ -72,10 +72,10 @@ public class FinishBugfixAction extends AbstractBranchAction {
         new Task.Backgroundable(myProject,"Finishing bugfix "+bugfixName,false){
             @Override
             public void run(@NotNull ProgressIndicator indicator) {
-                GitCommandResult result =  myGitflow.finishBugfix(myRepo, bugfixName, errorLineHandler);
-
-                //get the base branch for this bugfix
+                //get the base branch for this bugfix: finishing deletes the branch and its config
                 final String baseBranch = gitflowConfigUtil.getBaseBranch(branchUtil.getPrefixBugfix()+bugfixName);
+
+                GitCommandResult result =  myGitflow.finishBugfix(myRepo, bugfixName, errorLineHandler);
 
                 if (result.success()) {
                     String finishedBugfixMessage = String.format("The bugfix branch '%s%s' was merged into '%s'", branchUtil.getPrefixBugfix(), bugfixName, baseBranch);
