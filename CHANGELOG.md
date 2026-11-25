@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Stop the IDE from freezing when the Gitflow status bar widget refreshes: the git config is now read in the background, and once instead of twice (#17).
+
 ## [0.9.6] - 2026-11-24
 
 ### Changed

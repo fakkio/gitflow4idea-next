@@ -1,9 +1,5 @@
 package gitflow;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vcs.VcsException;
@@ -54,21 +50,60 @@ public class GitflowConfigUtil {
     public String supportPrefix;
     public String versiontagPrefix;
 
+    /**
+     * Returns the util of the repo, reading the git config the first time it is created.
+     * Reads the config with git, so it must not be called from the EDT the first time.
+     */
     public static GitflowConfigUtil getInstance(@NotNull Project project_, @NotNull GitRepository repo_)
     {
+        return getInstance(project_, repo_, false);
+    }
+
+    /**
+     * Like {@link #getInstance}, but always re-reads the git config (once, even if the util was just created).
+     * Runs git, so it must be called from a background thread.
+     */
+    public static GitflowConfigUtil getRefreshedInstance(@NotNull Project project_, @NotNull GitRepository repo_)
+    {
+        return getInstance(project_, repo_, true);
+    }
+
+    private static GitflowConfigUtil getInstance(Project project_, GitRepository repo_, boolean refresh)
+    {
         GitflowConfigUtil instance;
-        if (gitflowConfigUtilMap.containsKey(project_) && gitflowConfigUtilMap.get(project_).containsKey(repo_.getPresentableUrl())) {
-            instance = gitflowConfigUtilMap.get(project_).get(repo_.getPresentableUrl());
-        } else {
-            Map<String, GitflowConfigUtil> innerMap = new HashMap<String, GitflowConfigUtil>();
-            instance = new GitflowConfigUtil(project_, repo_);
+        boolean created = false;
 
-            gitflowConfigUtilMap.put(project_, innerMap);
-            innerMap.put(repo_.getPresentableUrl(), instance);
+        synchronized (gitflowConfigUtilMap) {
+            Map<String, GitflowConfigUtil> innerMap = gitflowConfigUtilMap.get(project_);
+            if (innerMap == null) {
+                innerMap = new HashMap<String, GitflowConfigUtil>();
+                gitflowConfigUtilMap.put(project_, innerMap);
+                final Map<String, GitflowConfigUtil> projectMap = innerMap;
+                Disposer.register(project_, () -> {
+                    synchronized (gitflowConfigUtilMap) {
+                        gitflowConfigUtilMap.remove(project_, projectMap);
+                    }
+                });
+            }
 
-            //cleanup
-            Disposer.register(repo_, () -> innerMap.remove(repo_));
-            Disposer.register(project_, () -> gitflowConfigUtilMap.remove(project_));
+            instance = innerMap.get(repo_.getPresentableUrl());
+            if (instance == null) {
+                instance = new GitflowConfigUtil(project_, repo_);
+                innerMap.put(repo_.getPresentableUrl(), instance);
+                created = true;
+
+                final Map<String, GitflowConfigUtil> repoMap = innerMap;
+                Disposer.register(repo_, () -> {
+                    synchronized (gitflowConfigUtilMap) {
+                        repoMap.remove(repo_.getPresentableUrl());
+                    }
+                });
+            }
+        }
+
+        // Outside the lock: it runs git, which can be slow
+        if (created || refresh) {
+            instance.update();
         }
 
         return instance;
@@ -77,8 +112,6 @@ public class GitflowConfigUtil {
     GitflowConfigUtil(Project project_, GitRepository repo_){
         project = project_;
         repo = repo_;
-
-        update();
     }
 
     /**
@@ -133,58 +166,52 @@ public class GitflowConfigUtil {
         }
     }
 
+    /**
+     * Re-reads the config from git, one process at a time.
+     * Must not be called from the EDT: it can take seconds where starting a process is slow.
+     */
     public void update(){
         VirtualFile root = repo.getRoot();
 
-        try{
-            Future<?> f = ApplicationManager.getApplication().executeOnPooledThread(() -> {
-                try {
-                    // Try to detect git-flow-next branches first
-                    detectGitflowNextBranches();
+        try {
+            // Try to detect git-flow-next branches first
+            detectGitflowNextBranches();
 
-                    // If detection didn't find branches, try old AVH format
-                    if (masterBranch == null || developBranch == null) {
-                        masterBranch = GitConfigUtil.getValue(project, root, BRANCH_MASTER);
-                        developBranch = GitConfigUtil.getValue(project, root, BRANCH_DEVELOP);
-                    }
+            // If detection didn't find branches, try old AVH format
+            if (masterBranch == null || developBranch == null) {
+                masterBranch = GitConfigUtil.getValue(project, root, BRANCH_MASTER);
+                developBranch = GitConfigUtil.getValue(project, root, BRANCH_DEVELOP);
+            }
 
-                    // Prefixes: try old format first, then new format
-                    featurePrefix = GitConfigUtil.getValue(project, root, PREFIX_FEATURE);
-                    if (featurePrefix == null) {
-                        featurePrefix = GitConfigUtil.getValue(project, root, BRANCH_FEATURE_PREFIX);
-                    }
+            // Prefixes: try old format first, then new format
+            featurePrefix = GitConfigUtil.getValue(project, root, PREFIX_FEATURE);
+            if (featurePrefix == null) {
+                featurePrefix = GitConfigUtil.getValue(project, root, BRANCH_FEATURE_PREFIX);
+            }
 
-                    releasePrefix = GitConfigUtil.getValue(project, root, PREFIX_RELEASE);
-                    if (releasePrefix == null) {
-                        releasePrefix = GitConfigUtil.getValue(project, root, BRANCH_RELEASE_PREFIX);
-                    }
+            releasePrefix = GitConfigUtil.getValue(project, root, PREFIX_RELEASE);
+            if (releasePrefix == null) {
+                releasePrefix = GitConfigUtil.getValue(project, root, BRANCH_RELEASE_PREFIX);
+            }
 
-                    hotfixPrefix = GitConfigUtil.getValue(project, root, PREFIX_HOTFIX);
-                    if (hotfixPrefix == null) {
-                        hotfixPrefix = GitConfigUtil.getValue(project, root, BRANCH_HOTFIX_PREFIX);
-                    }
+            hotfixPrefix = GitConfigUtil.getValue(project, root, PREFIX_HOTFIX);
+            if (hotfixPrefix == null) {
+                hotfixPrefix = GitConfigUtil.getValue(project, root, BRANCH_HOTFIX_PREFIX);
+            }
 
-                    bugfixPrefix = GitConfigUtil.getValue(project, root, PREFIX_BUGFIX);
-                    if (bugfixPrefix == null) {
-                        bugfixPrefix = GitConfigUtil.getValue(project, root, BRANCH_BUGFIX_PREFIX);
-                    }
+            bugfixPrefix = GitConfigUtil.getValue(project, root, PREFIX_BUGFIX);
+            if (bugfixPrefix == null) {
+                bugfixPrefix = GitConfigUtil.getValue(project, root, BRANCH_BUGFIX_PREFIX);
+            }
 
-                    supportPrefix = GitConfigUtil.getValue(project, root, PREFIX_SUPPORT);
-                    if (supportPrefix == null) {
-                        supportPrefix = GitConfigUtil.getValue(project, root, BRANCH_SUPPORT_PREFIX);
-                    }
+            supportPrefix = GitConfigUtil.getValue(project, root, PREFIX_SUPPORT);
+            if (supportPrefix == null) {
+                supportPrefix = GitConfigUtil.getValue(project, root, BRANCH_SUPPORT_PREFIX);
+            }
 
-                    versiontagPrefix = GitConfigUtil.getValue(project, root, PREFIX_VERSIONTAG);
-                } catch (VcsException e) {
-                    NotifyUtil.notifyError(project, "Config error", e);
-                }
-            });
-            f.get();
-
-        }  catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            versiontagPrefix = GitConfigUtil.getValue(project, root, PREFIX_VERSIONTAG);
+        } catch (VcsException e) {
+            NotifyUtil.notifyError(project, "Config error", e);
         }
     }
 
