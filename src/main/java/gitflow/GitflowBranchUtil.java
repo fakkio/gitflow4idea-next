@@ -45,11 +45,14 @@ public class GitflowBranchUtil {
         }
     }
 
+    /**
+     * Re-reads the git config and the branches. Runs git: call it from a background thread, never the EDT.
+     */
     public void update(){
         currentBranchName = GitBranchUtil.getBranchNameOrRev(myRepo);
 
-        GitflowConfigUtil gitflowConfigUtil = GitflowConfigUtil.getInstance(myProject, myRepo);
-        gitflowConfigUtil.update();
+        // Reads the config once, whether the util already existed or not
+        GitflowConfigUtil gitflowConfigUtil = GitflowConfigUtil.getRefreshedInstance(myProject, myRepo);
         branchnameMaster = gitflowConfigUtil.masterBranch;
         branchnameDevelop = gitflowConfigUtil.developBranch;
         prefixFeature = gitflowConfigUtil.featurePrefix;

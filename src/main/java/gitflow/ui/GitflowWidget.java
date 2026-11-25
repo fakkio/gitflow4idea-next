@@ -47,6 +47,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.JFrame;
 
@@ -68,6 +69,8 @@ public class GitflowWidget extends GitBranchWidget implements GitRepositoryChang
 
     private GitflowPopupGroup popupGroup;
     private final Project project;
+    private final AtomicBoolean refreshRunning = new AtomicBoolean();
+    private final AtomicBoolean refreshRequested = new AtomicBoolean();
 
     public GitflowWidget(@NotNull Project project) {
         super(project);
@@ -184,14 +187,40 @@ public class GitflowWidget extends GitBranchWidget implements GitRepositoryChang
 
     }
 
+    /**
+     * Re-reads the gitflow config in the background, then refreshes the widget on the EDT.
+     * Refreshes requested while one is running are merged into a single follow-up run.
+     */
     public void updateAsync() {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                update();
+        refreshRequested.set(true);
+        if (!refreshRunning.compareAndSet(false, true)) {
+            return;
+        }
 
-                if (myStatusBar != null){
-                    myStatusBar.updateWidget(ID());
+        ApplicationManager.getApplication().executeOnPooledThread(() -> {
+            try {
+                while (refreshRequested.getAndSet(false)) {
+                    Project project = getProject();
+                    if (project == null || project.isDisposed()) {
+                        return;
+                    }
+
+                    //repopulate the branchUtil (runs git: never on the EDT)
+                    GitflowBranchUtilManager.update(project);
+
+                    ApplicationManager.getApplication().invokeLater(() -> {
+                        update();
+
+                        if (myStatusBar != null) {
+                            myStatusBar.updateWidget(ID());
+                        }
+                    }, project.getDisposed());
+                }
+            } finally {
+                refreshRunning.set(false);
+                // A request that arrived after the last check would otherwise be lost
+                if (refreshRequested.get()) {
+                    updateAsync();
                 }
             }
         });
@@ -199,9 +228,6 @@ public class GitflowWidget extends GitBranchWidget implements GitRepositoryChang
 
     private void update() {
         Project project = getProject();
-
-        //repopulate the branchUtil
-        GitflowBranchUtilManager.update(project);
 
         if (project == null) {
             emptyTextAndTooltip();
@@ -219,6 +245,10 @@ public class GitflowWidget extends GitBranchWidget implements GitRepositoryChang
         popupGroup = new GitflowPopupGroup(project, false);
 
         GitflowBranchUtil gitflowBranchUtil = GitflowBranchUtilManager.getBranchUtil(repo);
+        if (gitflowBranchUtil == null) { // not loaded yet: the background refresh will update the widget
+            emptyTextAndTooltip();
+            return;
+        }
         boolean hasGitflow = gitflowBranchUtil.hasGitflow();
 
         myText = hasGitflow ? "Gitflow" : "No Gitflow";
